@@ -1,0 +1,4671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Module: text_correction/core</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Module: text_correction/core</h1>
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Classes</h3>
+
+        <dl>
+            <dt><a href="module-text_correction_core.HistoryManager.html">HistoryManager</a></dt>
+            <dd></dd>
+        </dl>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".debounce"><span class="type-signature">(static) </span>debounce<span class="signature">(win, fn, ms)</span><span class="type-signature"> &rarr; {F}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Simple debounce utility using the document/window timers.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>win</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Window</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Window to use for timers.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>fn</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">F</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Function to debounce.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>ms</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Milliseconds to wait after the last call.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="core_history.js.html">core/history.js</a>, <a href="core_history.js.html#line17">line 17</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    - Debounced function.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">F</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".decorateEditable"><span class="type-signature">(static) </span>decorateEditable<span class="signature">(input, doc, processed)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Attaches correction UI and history to a single editor.
+Idempotent via the provided `processed` WeakSet.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>input</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">HTMLTextAreaElement</span>
+|
+
+<span class="param-type">HTMLElement</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Textarea or contenteditable element.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>doc</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Document</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The editor’s owning document.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>processed</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WeakSet.&lt;Element></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Per-document set to avoid double decoration.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="core_decorate.js.html">core/decorate.js</a>, <a href="core_decorate.js.html#line23">line 23</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".handleNewEditors"><span class="type-signature">(static) </span>handleNewEditors<span class="signature">(nodeList, doc, processed)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Decorates each node in a NodeList as an editable, if applicable.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>nodeList</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Iterable.&lt;Element></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">NodeList or array of elements to process.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>doc</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Document</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The document owning the elements.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>processed</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WeakSet.&lt;Element></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Per-document set to avoid double decoration.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="core_editors-observer.js.html">core/editors-observer.js</a>, <a href="core_editors-observer.js.html#line17">line 17</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".observeIframes"><span class="type-signature">(static) </span>observeIframes<span class="signature">(doc, provide)</span><span class="type-signature"> &rarr; {MutationObserver}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Observes newly added iframes and wires their load handlers to call `provide`.
+Returns the MutationObserver instance.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>doc</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Document</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The document to observe.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>provide</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Function to call with each iframe's document.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="core_iframes.js.html">core/iframes.js</a>, <a href="core_iframes.js.html#line40">line 40</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    - The created MutationObserver instance.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">MutationObserver</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".observeNewEditors"><span class="type-signature">(static) </span>observeNewEditors<span class="signature">(doc, processed)</span><span class="type-signature"> &rarr; {MutationObserver}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Observes the document for newly added editors (textarea/contenteditable).
+Returns the MutationObserver instance.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>doc</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Document</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The document to observe.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>processed</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WeakSet.&lt;Element></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Per-document set to avoid double decoration.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="core_editors-observer.js.html">core/editors-observer.js</a>, <a href="core_editors-observer.js.html#line28">line 28</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    - The created MutationObserver instance.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">MutationObserver</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".scanIframes"><span class="type-signature">(static) </span>scanIframes<span class="signature">(doc, provide)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Scans same-origin iframes and calls `provide(doc)` on them (immediately or on load).
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>doc</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Document</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The document to scan.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>provide</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Function to call with each iframe's document.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="core_iframes.js.html">core/iframes.js</a>, <a href="core_iframes.js.html#line14">line 14</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Classes</h3>
+
+        <dl>
+            <dt><a href="module-text_correction_core.HistoryManager.html">HistoryManager</a></dt>
+            <dd></dd>
+        </dl>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".debounce"><span class="type-signature">(static) </span>debounce<span class="signature">(win, fn, ms)</span><span class="type-signature"> &rarr; {F}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Simple debounce utility using the document/window timers.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>win</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Window</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Window to use for timers.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>fn</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">F</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Function to debounce.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>ms</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Milliseconds to wait after the last call.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="core_history.js.html">core/history.js</a>, <a href="core_history.js.html#line17">line 17</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    - Debounced function.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">F</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".decorateEditable"><span class="type-signature">(static) </span>decorateEditable<span class="signature">(input, doc, processed)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Attaches correction UI and history to a single editor.
+Idempotent via the provided `processed` WeakSet.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>input</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">HTMLTextAreaElement</span>
+|
+
+<span class="param-type">HTMLElement</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Textarea or contenteditable element.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>doc</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Document</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The editor’s owning document.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>processed</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WeakSet.&lt;Element></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Per-document set to avoid double decoration.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="core_decorate.js.html">core/decorate.js</a>, <a href="core_decorate.js.html#line23">line 23</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".handleNewEditors"><span class="type-signature">(static) </span>handleNewEditors<span class="signature">(nodeList, doc, processed)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Decorates each node in a NodeList as an editable, if applicable.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>nodeList</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Iterable.&lt;Element></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">NodeList or array of elements to process.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>doc</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Document</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The document owning the elements.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>processed</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WeakSet.&lt;Element></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Per-document set to avoid double decoration.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="core_editors-observer.js.html">core/editors-observer.js</a>, <a href="core_editors-observer.js.html#line17">line 17</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".observeIframes"><span class="type-signature">(static) </span>observeIframes<span class="signature">(doc, provide)</span><span class="type-signature"> &rarr; {MutationObserver}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Observes newly added iframes and wires their load handlers to call `provide`.
+Returns the MutationObserver instance.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>doc</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Document</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The document to observe.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>provide</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Function to call with each iframe's document.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="core_iframes.js.html">core/iframes.js</a>, <a href="core_iframes.js.html#line40">line 40</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    - The created MutationObserver instance.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">MutationObserver</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".observeNewEditors"><span class="type-signature">(static) </span>observeNewEditors<span class="signature">(doc, processed)</span><span class="type-signature"> &rarr; {MutationObserver}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Observes the document for newly added editors (textarea/contenteditable).
+Returns the MutationObserver instance.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>doc</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Document</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The document to observe.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>processed</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WeakSet.&lt;Element></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Per-document set to avoid double decoration.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="core_editors-observer.js.html">core/editors-observer.js</a>, <a href="core_editors-observer.js.html#line28">line 28</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    - The created MutationObserver instance.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">MutationObserver</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".scanIframes"><span class="type-signature">(static) </span>scanIframes<span class="signature">(doc, provide)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Scans same-origin iframes and calls `provide(doc)` on them (immediately or on load).
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>doc</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Document</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The document to scan.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>provide</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Function to call with each iframe's document.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="core_iframes.js.html">core/iframes.js</a>, <a href="core_iframes.js.html#line14">line 14</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Classes</h3>
+
+        <dl>
+            <dt><a href="module-text_correction_core.HistoryManager.html">HistoryManager</a></dt>
+            <dd></dd>
+        </dl>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".debounce"><span class="type-signature">(static) </span>debounce<span class="signature">(win, fn, ms)</span><span class="type-signature"> &rarr; {F}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Simple debounce utility using the document/window timers.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>win</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Window</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Window to use for timers.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>fn</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">F</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Function to debounce.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>ms</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Milliseconds to wait after the last call.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="core_history.js.html">core/history.js</a>, <a href="core_history.js.html#line17">line 17</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    - Debounced function.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">F</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".decorateEditable"><span class="type-signature">(static) </span>decorateEditable<span class="signature">(input, doc, processed)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Attaches correction UI and history to a single editor.
+Idempotent via the provided `processed` WeakSet.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>input</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">HTMLTextAreaElement</span>
+|
+
+<span class="param-type">HTMLElement</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Textarea or contenteditable element.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>doc</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Document</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The editor’s owning document.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>processed</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WeakSet.&lt;Element></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Per-document set to avoid double decoration.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="core_decorate.js.html">core/decorate.js</a>, <a href="core_decorate.js.html#line23">line 23</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".handleNewEditors"><span class="type-signature">(static) </span>handleNewEditors<span class="signature">(nodeList, doc, processed)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Decorates each node in a NodeList as an editable, if applicable.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>nodeList</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Iterable.&lt;Element></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">NodeList or array of elements to process.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>doc</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Document</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The document owning the elements.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>processed</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WeakSet.&lt;Element></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Per-document set to avoid double decoration.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="core_editors-observer.js.html">core/editors-observer.js</a>, <a href="core_editors-observer.js.html#line17">line 17</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".observeIframes"><span class="type-signature">(static) </span>observeIframes<span class="signature">(doc, provide)</span><span class="type-signature"> &rarr; {MutationObserver}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Observes newly added iframes and wires their load handlers to call `provide`.
+Returns the MutationObserver instance.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>doc</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Document</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The document to observe.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>provide</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Function to call with each iframe's document.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="core_iframes.js.html">core/iframes.js</a>, <a href="core_iframes.js.html#line40">line 40</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    - The created MutationObserver instance.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">MutationObserver</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".observeNewEditors"><span class="type-signature">(static) </span>observeNewEditors<span class="signature">(doc, processed)</span><span class="type-signature"> &rarr; {MutationObserver}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Observes the document for newly added editors (textarea/contenteditable).
+Returns the MutationObserver instance.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>doc</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Document</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The document to observe.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>processed</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WeakSet.&lt;Element></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Per-document set to avoid double decoration.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="core_editors-observer.js.html">core/editors-observer.js</a>, <a href="core_editors-observer.js.html#line28">line 28</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    - The created MutationObserver instance.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">MutationObserver</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".scanIframes"><span class="type-signature">(static) </span>scanIframes<span class="signature">(doc, provide)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Scans same-origin iframes and calls `provide(doc)` on them (immediately or on load).
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>doc</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Document</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The document to scan.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>provide</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Function to call with each iframe's document.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="core_iframes.js.html">core/iframes.js</a>, <a href="core_iframes.js.html#line14">line 14</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+
+<section>
+
+<header>
+    
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Classes</h3>
+
+        <dl>
+            <dt><a href="module-text_correction_core.HistoryManager.html">HistoryManager</a></dt>
+            <dd></dd>
+        </dl>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".debounce"><span class="type-signature">(static) </span>debounce<span class="signature">(win, fn, ms)</span><span class="type-signature"> &rarr; {F}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Simple debounce utility using the document/window timers.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>win</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Window</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Window to use for timers.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>fn</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">F</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Function to debounce.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>ms</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Milliseconds to wait after the last call.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="core_history.js.html">core/history.js</a>, <a href="core_history.js.html#line17">line 17</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    - Debounced function.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">F</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".decorateEditable"><span class="type-signature">(static) </span>decorateEditable<span class="signature">(input, doc, processed)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Attaches correction UI and history to a single editor.
+Idempotent via the provided `processed` WeakSet.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>input</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">HTMLTextAreaElement</span>
+|
+
+<span class="param-type">HTMLElement</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Textarea or contenteditable element.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>doc</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Document</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The editor’s owning document.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>processed</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WeakSet.&lt;Element></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Per-document set to avoid double decoration.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="core_decorate.js.html">core/decorate.js</a>, <a href="core_decorate.js.html#line23">line 23</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".handleNewEditors"><span class="type-signature">(static) </span>handleNewEditors<span class="signature">(nodeList, doc, processed)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Decorates each node in a NodeList as an editable, if applicable.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>nodeList</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Iterable.&lt;Element></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">NodeList or array of elements to process.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>doc</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Document</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The document owning the elements.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>processed</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WeakSet.&lt;Element></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Per-document set to avoid double decoration.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="core_editors-observer.js.html">core/editors-observer.js</a>, <a href="core_editors-observer.js.html#line17">line 17</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".observeIframes"><span class="type-signature">(static) </span>observeIframes<span class="signature">(doc, provide)</span><span class="type-signature"> &rarr; {MutationObserver}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Observes newly added iframes and wires their load handlers to call `provide`.
+Returns the MutationObserver instance.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>doc</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Document</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The document to observe.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>provide</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Function to call with each iframe's document.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="core_iframes.js.html">core/iframes.js</a>, <a href="core_iframes.js.html#line40">line 40</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    - The created MutationObserver instance.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">MutationObserver</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".observeNewEditors"><span class="type-signature">(static) </span>observeNewEditors<span class="signature">(doc, processed)</span><span class="type-signature"> &rarr; {MutationObserver}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Observes the document for newly added editors (textarea/contenteditable).
+Returns the MutationObserver instance.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>doc</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Document</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The document to observe.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>processed</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">WeakSet.&lt;Element></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Per-document set to avoid double decoration.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="core_editors-observer.js.html">core/editors-observer.js</a>, <a href="core_editors-observer.js.html#line28">line 28</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    - The created MutationObserver instance.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">MutationObserver</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".scanIframes"><span class="type-signature">(static) </span>scanIframes<span class="signature">(doc, provide)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Scans same-origin iframes and calls `provide(doc)` on them (immediately or on load).
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>doc</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Document</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The document to scan.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>provide</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Function to call with each iframe's document.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="core_iframes.js.html">core/iframes.js</a>, <a href="core_iframes.js.html#line14">line 14</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-text_correction.html">text_correction</a></li><li><a href="module-text_correction_ce.html">text_correction/ce</a></li><li><a href="module-text_correction_core.html">text_correction/core</a></li><li><a href="module-text_correction_dom.html">text_correction/dom</a></li></ul><h3>Classes</h3><ul><li><a href="module-text_correction_core.HistoryManager.html">HistoryManager</a></li></ul><h3>Global</h3><ul><li><a href="global.html#getTextCorrection">getTextCorrection</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Wed Nov 19 2025 15:57:49 GMT+0100 (Mitteleuropäische Normalzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
