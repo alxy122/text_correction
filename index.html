@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en"></html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Test: Text Correction</title>
+    <style>
+        body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;padding:20px}
+        .box{margin:10px 0;padding:10px;border:1px solid #ccc;border-radius:4px}
+    </style>
+</head>
+<body>
+    <h1>Test page for text correction</h1>
+
+    <h2>Textarea</h2>
+    <textarea id="test-textarea" class="box" rows="4" cols="60">This is a sample sentence with errors.</textarea>
+
+    <h2>Textarea with disabled text correction</h2>
+    <textarea id="test-disabled-textarea" class="box" no-ai-correction rows="4" cols="60">This is a sample sentence with errors.</textarea>
+
+    <h2>Contenteditable</h2>
+    <div id="test-contenteditable" class="box" contenteditable="true">This is a <b>content</b> with errors.</div>
+
+    <h2>Same-origin iframe (srcdoc)</h2>
+    <iframe id="test-iframe" class="box" style="width:100%;height:180px" srcdoc="<!doctype html><html><body><textarea rows='4' cols='60'>Iframe text with errors.</textarea></body></html>"></iframe>
+
+    <p>The page loads <code>main.js</code> as an ES module. Open DevTools (Console) to see errors/logs.</p>
+
+    <script type="module" src="./main.js"></script>
+</body>
+</html>

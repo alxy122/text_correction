@@ -1,0 +1,203 @@
+/**
+ * @module text_correction/core
+ */
+
+/**
+ * @file Decorates a single editor with correction UI, history, and events.
+ */
+
+import {isContentEditable, setCETextPreservingSimpleSpan} from "../ce/text-io.js";
+import {debounce, HistoryManager} from "./history.js";
+import {makeIcon, showError, showSpinner, showTick} from "../dom/icons.js";
+import {placeIcons} from "../dom/positioning.js";
+import {getTextCorrection} from "../ai/ai.js";
+
+/**
+ * Attaches correction UI and history to a single editor.
+ * Idempotent via the provided `processed` WeakSet.
+ *
+ * @param {HTMLTextAreaElement|HTMLElement} input - Textarea or contenteditable element.
+ * @param {Document} doc - The editor’s owning document.
+ * @param {WeakSet<Element>} processed - Per-document set to avoid double decoration.
+ */
+export function decorateEditable(input, doc, processed) {
+    const win = doc.defaultView;
+    const isTA = input instanceof win.HTMLTextAreaElement;
+    const isCE = isContentEditable(input);
+    if (!isTA && !isCE) return;
+
+    if (processed.has(input)) return;
+    processed.add(input);
+
+    /** @returns {string} */
+    const getVal = () => (isTA ? input.value : input.innerText);
+
+    /**
+     * Sets the element value and dispatches `input` + `change` events.
+     * @param {string} v
+     */
+    const setVal = (v) => {
+        if (isTA) input.value = v;
+        else setCETextPreservingSimpleSpan(input, v);
+        input.dispatchEvent(new win.Event("input", { bubbles: true }));
+        input.dispatchEvent(new win.Event("change", { bubbles: true }));
+    };
+
+    /** Focus helper to keep caret in the editor. */
+    const focusInput = () => input.focus();
+
+    let busy = false;
+
+    // History
+    const hist = new HistoryManager(getVal(), 50);
+
+    // Create UI icons
+    const corrIcon = makeIcon(doc, "✎", "Korrigiert den Text automatisch");
+    const redoIcon = makeIcon(doc, "↷", "Vorwärts (Redo)");
+    const undoIcon = makeIcon(doc, "↶", "Zurück (Undo)");
+    corrIcon.style.background = "#ffae00ff";
+    redoIcon.style.background = "#777777";
+    undoIcon.style.background = "#d93025";
+
+    const icons = { corr: corrIcon, redo: redoIcon, undo: undoIcon };
+
+    /** @type {{corr:boolean, redo:boolean, undo:boolean}} */
+    const hover = { corr: false, redo: false, undo: false };
+    const setHover = (k, v) => { hover[k] = v; updateButtonsVisibility(); };
+
+    /** Shows/hides icons depending on focus/hover/busy and availability of undo/redo. */
+    function updateButtonsVisibility() {
+        const ae = doc.activeElement;
+        const focused = ae && (ae === input || (isCE && input.contains(ae)));
+        const hovering = hover.corr || hover.redo || hover.undo;
+        const shouldShow = focused || hovering || busy;
+
+        corrIcon.style.display = shouldShow ? "flex" : "none";
+        undoIcon.style.display = shouldShow && hist.canUndo() ? "flex" : "none";
+        redoIcon.style.display = (shouldShow && hist.canRedo()) ? "flex" : "none";
+
+        if (shouldShow) placeIcons(input, icons, hist.canRedo(), isTA, isCE);
+    }
+
+    /** Pushes a new snapshot if value changed; trims history and clears redo. */
+    function snapshot() {
+        if (hist.isRestoring) return;
+        hist.snapshot(getVal());
+        updateButtonsVisibility();
+    }
+
+    const debouncedSnapshot = debounce(win, snapshot, 400);
+
+    // Input events
+    if (isTA) {
+        input.addEventListener("input", debouncedSnapshot);
+        input.addEventListener("change", snapshot);
+        input.addEventListener("blur", snapshot);
+    } else {
+        input.addEventListener("input", debouncedSnapshot);
+        input.addEventListener("blur", snapshot);
+        input.addEventListener("keyup", debouncedSnapshot);
+        input.style.whiteSpace = "pre-wrap";
+    }
+
+    // Focus/selection wiring
+    if (isCE) {
+        input.addEventListener("focusin", () => { placeIcons(input, icons, hist.canRedo(), isTA, isCE); updateButtonsVisibility(); });
+        input.addEventListener("focusout", () => { win.setTimeout(updateButtonsVisibility, 0); });
+        doc.addEventListener("selectionchange", () => {
+            const sel = doc.getSelection();
+            if (!sel || !sel.anchorNode) return;
+            if (input.contains(sel.anchorNode)) {
+                placeIcons(input, icons, hist.canRedo(), isTA, isCE);
+                updateButtonsVisibility();
+            }
+        });
+    } else {
+        input.addEventListener("focus", () => { placeIcons(input, icons, hist.canRedo(), isTA, isCE); updateButtonsVisibility(); });
+        input.addEventListener("click", () => { placeIcons(input, icons, hist.canRedo(), isTA, isCE); updateButtonsVisibility(); });
+    }
+
+    // Hover
+    corrIcon.addEventListener("mouseenter", () => setHover("corr", true));
+    corrIcon.addEventListener("mouseleave", () => setHover("corr", false));
+    redoIcon.addEventListener("mouseenter", () => setHover("redo", true));
+    redoIcon.addEventListener("mouseleave", () => setHover("redo", false));
+    undoIcon.addEventListener("mouseenter", () => setHover("undo", true));
+    undoIcon.addEventListener("mouseleave", () => setHover("undo", false));
+
+    // Keep focus in editor when icons are clicked
+    const keepFocus = (e) => { e.preventDefault(); focusInput(); };
+    corrIcon.addEventListener("mousedown", keepFocus);
+    redoIcon.addEventListener("mousedown", keepFocus);
+    undoIcon.addEventListener("mousedown", keepFocus);
+
+    // Click behaviors
+    corrIcon.addEventListener("click", async (e) => {
+        e.preventDefault(); e.stopPropagation();
+        busy = true; updateButtonsVisibility();
+
+        const valBefore = getVal();
+        const last = hist.history[hist.history.length - 1];
+        if (valBefore !== last) {
+            hist.push(valBefore);
+            if (hist.history.length > hist.max) hist.history.shift();
+        }
+        hist.clearRedo(); updateButtonsVisibility();
+
+        const spinner = showSpinner(corrIcon);
+        try {
+            // IMPORTANT: Requires a frame- or global-scoped getTextCorrection(text)
+            const correction = await getTextCorrection(valBefore);
+            spinner.remove();
+            if (correction != null && correction !== valBefore) {
+                setVal(correction);
+                const nowVal = getVal();
+                const latest = hist.history[hist.history.length - 1];
+                if (nowVal !== latest) {
+                    hist.push(nowVal);
+                    if (hist.history.length > hist.max) hist.history.shift();
+                }
+                showTick(corrIcon);
+                focusInput();
+            } else {
+                showTick(corrIcon);
+            }
+        } catch (err) {
+            console.log("TextCorrection", `Error during text correction: ${err.message}`, "error");
+            spinner.remove();
+            showError(corrIcon);
+        } finally {
+            busy = false;
+            updateButtonsVisibility();
+        }
+    });
+
+    undoIcon.addEventListener("click", (e) => {
+        e.preventDefault(); e.stopPropagation();
+        const prev = hist.undo();
+        if (prev == null) return;
+        setVal(prev);
+        focusInput();
+        updateButtonsVisibility();
+    });
+
+    redoIcon.addEventListener("click", (e) => {
+        e.preventDefault(); e.stopPropagation();
+        const next = hist.redoOnce();
+        if (next == null) return;
+        setVal(next);
+        focusInput();
+        updateButtonsVisibility();
+    });
+
+    const maybeHideSoon = () => { win.setTimeout(updateButtonsVisibility, 0); };
+    input.addEventListener("blur", maybeHideSoon);
+
+    // Reposition on resize/scroll/layout changes
+    const ro = new win.ResizeObserver(() => { placeIcons(input, icons, hist.canRedo(), isTA, isCE); });
+    try { ro.observe(input); } catch { /* silently ignore */ }
+    win.addEventListener("scroll", () => placeIcons(input, icons, hist.canRedo(), isTA, isCE), { passive: true });
+    win.addEventListener("resize", () => placeIcons(input, icons, hist.canRedo(), isTA, isCE), { passive: true });
+
+    placeIcons(input, icons, hist.canRedo(), isTA, isCE);
+}
