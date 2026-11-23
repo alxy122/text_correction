@@ -1,8 +1,9 @@
 const BASE_URL = process.env.BASE_URL;
 const API_KEY = process.env.API_KEY;
+const MODEL = process.env.MODEL || "gpt-4o-mini";
 
 /**
- * Get text correction using OpenAI's Chat Completions API
+ * Get text correction via an OpenAI-compatible Chat Completions API
  * @async
  * @function
  * @param {string} inputText - The text to be corrected
@@ -16,7 +17,7 @@ export async function getTextCorrection(inputText) {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            model: "gpt-4o-mini",
+            model: MODEL,
             messages: [
                 {
                     role: "system",
@@ -30,7 +31,7 @@ export async function getTextCorrection(inputText) {
 
     if (!res.ok) {
         const err = await res.text().catch(() => "");
-        throw new Error(`OpenAI Fehler: ${res.status} ${res.statusText} ${err}`);
+        throw new Error(`API Fehler: ${res.status} ${res.statusText} ${err}`);
     }
     const data = await res.json();
     if (data?.choices?.[0]?.message?.content) {
