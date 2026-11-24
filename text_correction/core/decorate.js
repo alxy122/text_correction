@@ -19,7 +19,7 @@ import {getTextCorrection} from "../ai/ai.js";
  * @param {HTMLTextAreaElement|HTMLElement} input - Textarea or contenteditable element.
  * @param {Document} doc - The editor’s owning document.
  * @param {WeakSet<Element>} processed - Per-document set to avoid double decoration.
- * @param {import("../ai/ai.js").AiConfig} aiConfig - API connection settings.
+ * @param {Object} aiConfig - API connection settings.
  */
 export function decorateEditable(input, doc, processed, aiConfig) {
     const win = doc.defaultView;
