@@ -31,8 +31,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Install Graphviz
+        run: sudo apt-get update && sudo apt-get install --yes graphviz
+
       - name: Generate documentation
-        run: npx --yes jsdoc@4.0.5 text_correction -r -d docs
+        run: |
+          npx --yes jsdoc@4.0.5 text_correction -r -R docs-intro.md -d docs
+          npx madge --image docs/dependency-graph.svg text_correction
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
