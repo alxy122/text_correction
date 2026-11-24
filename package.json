@@ -1,0 +1,20 @@
+{
+  "name": "text-correction",
+  "version": "1.0.0",
+  "description": "Adds an AI text correction button to textareas and contenteditable elements, using any OpenAI-compatible Chat Completions API.",
+  "type": "module",
+  "exports": {
+    ".": "./text_correction/index.js"
+  },
+  "files": [
+    "text_correction"
+  ],
+  "scripts": {
+    "dev": "vite --config test/browser/vite.config.js",
+    "build": "vite build --config test/browser/vite.config.js",
+    "test:node": "npm --prefix test/node install --no-audit --no-fund && npm --prefix test/node test"
+  },
+  "devDependencies": {
+    "vite": "6.4.6"
+  }
+}
