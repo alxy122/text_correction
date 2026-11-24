@@ -1,0 +1,11 @@
+{
+  "name": "text-correction-node-test",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --env-file=../../.env index.js"
+  },
+  "dependencies": {
+    "text-correction": "file:../.."
+  }
+}
