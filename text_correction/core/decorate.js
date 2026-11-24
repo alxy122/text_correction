@@ -19,8 +19,9 @@ import {getTextCorrection} from "../ai/ai.js";
  * @param {HTMLTextAreaElement|HTMLElement} input - Textarea or contenteditable element.
  * @param {Document} doc - The editor’s owning document.
  * @param {WeakSet<Element>} processed - Per-document set to avoid double decoration.
+ * @param {import("../ai/ai.js").AiConfig} aiConfig - API connection settings.
  */
-export function decorateEditable(input, doc, processed) {
+export function decorateEditable(input, doc, processed, aiConfig) {
     const win = doc.defaultView;
     const isTA = input instanceof win.HTMLTextAreaElement;
     const isCE = isContentEditable(input);
@@ -146,8 +147,7 @@ export function decorateEditable(input, doc, processed) {
 
         const spinner = showSpinner(corrIcon);
         try {
-            // IMPORTANT: Requires a frame- or global-scoped getTextCorrection(text)
-            const correction = await getTextCorrection(valBefore);
+            const correction = await getTextCorrection(valBefore, aiConfig);
             spinner.remove();
             if (correction != null && correction !== valBefore) {
                 setVal(correction);

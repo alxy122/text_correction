@@ -13,9 +13,10 @@ import {decorateEditable} from "./decorate.js";
  * @param {Iterable<Element>} nodeList - NodeList or array of elements to process.
  * @param {Document} doc - The document owning the elements.
  * @param {WeakSet<Element>} processed - Per-document set to avoid double decoration.
+ * @param {import("../ai/ai.js").AiConfig} aiConfig - API connection settings.
  */
-export function handleNewEditors(nodeList, doc, processed) {
-    nodeList.forEach((el) => decorateEditable(el, doc, processed));
+export function handleNewEditors(nodeList, doc, processed, aiConfig) {
+    nodeList.forEach((el) => decorateEditable(el, doc, processed, aiConfig));
 }
 
 /**
@@ -23,9 +24,11 @@ export function handleNewEditors(nodeList, doc, processed) {
  * Returns the MutationObserver instance.
  * @param {Document} doc - The document to observe.
  * @param {WeakSet<Element>} processed - Per-document set to avoid double decoration.
+ * @param {string} editorSelector - Selector for editor elements to decorate.
+ * @param {import("../ai/ai.js").AiConfig} aiConfig - API connection settings.
  * @returns {MutationObserver} - The created MutationObserver instance.
  */
-export function observeNewEditors(doc, processed, editorSelector = "textarea:not([no-ai-correction]), [contenteditable]:not([contenteditable='false']):not([no-ai-correction])") {
+export function observeNewEditors(doc, processed, editorSelector, aiConfig) {
     const mo = new doc.defaultView.MutationObserver(muts => {
         for (const m of muts) {
             for (const n of m.addedNodes) {
@@ -33,7 +36,7 @@ export function observeNewEditors(doc, processed, editorSelector = "textarea:not
                 const el = n;
                 try {
                     if (el.matches && el.matches(editorSelector)) {
-                        handleNewEditors([el], doc, processed);
+                        handleNewEditors([el], doc, processed, aiConfig);
                         continue;
                     }
                 } catch (e) {
@@ -41,7 +44,7 @@ export function observeNewEditors(doc, processed, editorSelector = "textarea:not
                 }
 
                 const inner = n.querySelectorAll?.(editorSelector);
-                if (inner && inner.length) handleNewEditors(inner, doc, processed);
+                if (inner && inner.length) handleNewEditors(inner, doc, processed, aiConfig);
             }
         }
     });
